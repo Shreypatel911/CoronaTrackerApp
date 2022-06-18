@@ -7,22 +7,33 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" type="text/css" media="all"
           href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
 
 <body>
-<table>
-    <tr>
-        <th>Country</th>
-        <th>State</th>
-        <th>Corona cases reported</th>
-    </tr>
-    <tr th:each="locationState : ${locationStates}">
-        <td th:text="${locationState.country}"></td>
-        <td th:text="${locationState.state}"></td>
-        <td th:text="${locationState.latestTotalCases}"></td>
-    </tr>
-</table>
-
+<div class="container">
+    <h1>Corona Tracker Application</h1>
+    <p>This application shows total number of corona cases reported across the globe</p>
+    <div class="jumbotron">
+        <h1 class="display-4" th:text="${totalReportedCases}"></h1>
+        <p class="lead">Total cases reported as of today</p>
+    </div>
+    <table class="table">
+        <tr>
+            <th>Country</th>
+            <th>State</th>
+            <th>Corona cases reported</th>
+            <th>Changes from last day</th>
+        </tr>
+        <tr th:each="locationState : ${locationStats}">
+            <td th:text="${locationState.country}"></td>
+            <td th:text="${locationState.state}"></td>
+            <td th:text="${locationState.latestTotalCases}"></td>
+            <td th:text="${locationState.diffFromPrevDay}"></td>
+        </tr>
+    </table>
+</div>
 </body>
 
 </html>

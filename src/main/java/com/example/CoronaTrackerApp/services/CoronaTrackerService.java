@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.io.Reader;
 import java.io.StringReader;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -41,12 +40,15 @@ public class CoronaTrackerService {
         StringReader stringReader = new StringReader(httpResponse.body());
         Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(stringReader);
         for (CSVRecord record : records) {
+
             LocationStats locationStats = new LocationStats();
             locationStats.setState(record.get("Province/State"));
             locationStats.setCountry(record.get("Country/Region"));
-            locationStats.setLatestTotalCases(Integer.parseInt(record.get(record.size() - 1)));
+            int latestCases = Integer.parseInt(record.get(record.size() - 1));
+            int prevDayCases = Integer.parseInt(record.get(record.size() - 2));
+            locationStats.setLatestTotalCases(latestCases);
+            locationStats.setDiffFromPrevDay(latestCases - prevDayCases);
 
-            //System.out.println(locationStats);
             newStats.add(locationStats);
         }
         this.finalStats = newStats;
